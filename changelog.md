@@ -15,6 +15,16 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.5.0] — 2026-06-01
+
+### Added — FEAT-004 Cognito JWT Authentication
+
+- `plugins/Auth.kt` — `configureAuth()` installs Ktor `Authentication` plugin with a `jwt("cognito")` provider; JWKS fetched from `https://cognito-idp.us-east-1.amazonaws.com/${COGNITO_USER_POOL_ID}/.well-known/jwks.json`; keys cached (10 / 24 h) and rate-limited (10 req/min); `validate` block checks `client_id` claim equals `COGNITO_CLIENT_ID` env var
+- `plugins/Routing.kt` — `configureRouting()` wraps all `/api` routes inside `authenticate("cognito") { }`, keeping `GET /health` public
+- `Application.kt` — inline routing removed; `configureAuth()` called before `configureRouting()`
+
+---
+
 ## [0.4.0] — 2026-06-01
 
 ### Added — FEAT-009 CI/CD Pipelines

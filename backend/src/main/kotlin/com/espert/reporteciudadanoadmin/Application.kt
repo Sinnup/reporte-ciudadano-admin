@@ -1,9 +1,7 @@
 package com.espert.reporteciudadanoadmin
 
-import com.espert.reporteciudadanoadmin.aws.DynamoDbReportRepository
-import com.espert.reporteciudadanoadmin.aws.S3PhotoRepository
-import com.espert.reporteciudadanoadmin.routes.photosRoutes
-import com.espert.reporteciudadanoadmin.routes.reportsRoutes
+import com.espert.reporteciudadanoadmin.plugins.configureAuth
+import com.espert.reporteciudadanoadmin.plugins.configureRouting
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -11,8 +9,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 
 fun main() {
@@ -34,13 +30,6 @@ fun Application.module() {
         allowHeader(HttpHeaders.Authorization)
         allowMethod(HttpMethod.Put)
     }
-    routing {
-        get("/health") {
-            call.respond(HttpStatusCode.OK)
-        }
-        route("/api") {
-            reportsRoutes(DynamoDbReportRepository())
-            photosRoutes(S3PhotoRepository())
-        }
-    }
+    configureAuth()
+    configureRouting()
 }

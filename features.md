@@ -50,6 +50,26 @@ As a developer, I want automated CI checks on every PR so that broken builds, fa
 
 ---
 
+### FEAT-004 — Cognito JWT Authentication
+**Status**: Done
+**Branch**: `feature/feat-004-cognito-jwt-auth`
+
+#### Architect Notes
+Install `ktor-server-auth-jwt` plugin (already in dependencies) to validate Cognito access tokens on all `/api` routes. JWKS URL is fetched from the Cognito User Pool's well-known endpoint using `JwkProviderBuilder` (cached 10 keys / 24 h, rate-limited). The `validate` block checks `client_id` claim matches `COGNITO_CLIENT_ID` env var. `/health` remains unauthenticated. Auth configuration extracted to `plugins/Auth.kt` and routing extracted to `plugins/Routing.kt` so `Application.kt` stays thin.
+
+#### User Story
+As a government official, I want the admin dashboard API to reject requests without a valid Cognito access token so that report data is only accessible to authenticated users.
+
+#### Acceptance Criteria
+- [x] All `GET`/`PUT` routes under `/api` return `401` when `Authorization` header is absent
+- [x] All `GET`/`PUT` routes under `/api` return `401` when the token is expired or has wrong `client_id`
+- [x] All `GET`/`PUT` routes under `/api` return the expected response when a valid Cognito access token is supplied
+- [x] `GET /health` returns `200` without any `Authorization` header
+- [x] No long-lived credentials committed — pool ID and client ID supplied via `COGNITO_USER_POOL_ID` and `COGNITO_CLIENT_ID` env vars
+- [x] JWKS keys are cached (10 keys, 24 h) and rate-limited to avoid hammering the Cognito endpoint
+
+---
+
 ### FEAT-003 — Backend API (DynamoDB + S3 read)
 **Status**: Done
 **Branch**: `feature/feat-003-backend-api`
