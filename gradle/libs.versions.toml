@@ -1,11 +1,11 @@
 [versions]
-kotlin = "2.1.0"
+kotlin = "2.3.0"
 ktor = "3.1.3"
-compose-multiplatform = "1.7.3"
+compose-multiplatform = "1.8.0"
 aws-sdk-kotlin = "1.3.61"
-kotlinx-serialization = "1.7.3"
+kotlinx-serialization = "1.8.0"
 logback = "1.4.14"
-shadow = "8.1.1"
+shadow = "9.0.0"
 
 [libraries]
 # Ktor — server
@@ -37,4 +37,4 @@ kotlin-multiplatform   = { id = "org.jetbrains.kotlin.multiplatform",          v
 kotlin-serialization   = { id = "org.jetbrains.kotlin.plugin.serialization",   version.ref = "kotlin" }
 compose-multiplatform  = { id = "org.jetbrains.compose",                       version.ref = "compose-multiplatform" }
 compose-compiler       = { id = "org.jetbrains.kotlin.plugin.compose",         version.ref = "kotlin" }
-shadow                 = { id = "com.github.johnrengelman.shadow",              version.ref = "shadow" }
+shadow                 = { id = "com.gradleup.shadow",                         version.ref = "shadow" }

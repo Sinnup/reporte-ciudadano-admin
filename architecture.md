@@ -246,10 +246,11 @@ Push to main
 | # | ID | Feature | Branch |
 |---|---|---|---|
 | 1 | FEAT-001 | Project scaffolding & Gradle setup | `feature/feat-001-scaffold` |
-| 2 | FEAT-002 | Backend API (DynamoDB + S3 read) | `feature/feat-002-backend-api` |
-| 3 | FEAT-003 | Cognito auth (backend JWT validation) | `feature/feat-003-cognito-auth` |
-| 4 | FEAT-004 | Reports list screen (frontend) | `feature/feat-004-reports-list` |
-| 5 | FEAT-005 | Report detail + status update | `feature/feat-005-report-detail` |
-| 6 | FEAT-006 | Reports map view | `feature/feat-006-map` |
-| 7 | FEAT-007 | AWS infra provisioning (ECS, ALB, Cognito, CloudFront) | `feature/feat-007-aws-infra` |
-| 8 | FEAT-008 | CI/CD pipelines | `feature/feat-008-cicd` |
+| 2 | FEAT-002 | Gradle 9 upgrade | `feature/feat-002-gradle-9-upgrade` |
+| 3 | FEAT-003 | Backend API (DynamoDB + S3 read) | `feature/feat-003-backend-api` |
+| 4 | FEAT-004 | Cognito auth (backend JWT validation) | `feature/feat-004-cognito-auth` |
+| 5 | FEAT-005 | Reports list screen (frontend) | `feature/feat-005-reports-list` |
+| 6 | FEAT-006 | Report detail + status update | `feature/feat-006-report-detail` |
+| 7 | FEAT-007 | Reports map view | `feature/feat-007-map` |
+| 8 | FEAT-008 | AWS infra provisioning (ECS, ALB, Cognito, CloudFront) | `feature/feat-008-aws-infra` |
+| 9 | FEAT-009 | CI/CD pipelines | `feature/feat-009-cicd` |

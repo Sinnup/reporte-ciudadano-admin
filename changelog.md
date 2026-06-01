@@ -15,6 +15,20 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.2.0] — 2026-06-01
+
+### Changed — FEAT-002 Gradle 9 Upgrade
+
+- Gradle wrapper bumped from 8.10.2 to 9.5.1
+- Shadow plugin migrated from `com.github.johnrengelman.shadow` to `com.gradleup.shadow` 9.0.0 (Gradle 9 compatible fork)
+- Kotlin bumped from 2.1.0 to 2.3.0
+- Compose Multiplatform bumped from 1.7.3 to 1.8.0
+- kotlinx-serialization bumped from 1.7.3 to 1.8.0
+- Frontend dev server pinned to port 3000 (avoids conflict with backend on 8080)
+- `gradle.properties` added with `-Xmx4g` for Gradle and Kotlin daemon
+
+---
+
 ## [0.1.0] — 2026-06-01
 
 ### Added — FEAT-001 Project Scaffolding

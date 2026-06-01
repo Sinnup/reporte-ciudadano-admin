@@ -13,10 +13,16 @@ version = "0.1.0"
 kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "admin"
+        outputModuleName = "admin"
         browser {
             commonWebpackConfig {
                 outputFileName = "admin.js"
+            }
+            runTask {
+                devServerProperty = org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer(
+                    port = 3000,
+                    open = true
+                )
             }
         }
         binaries.executable()

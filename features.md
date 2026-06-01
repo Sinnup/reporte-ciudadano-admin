@@ -27,6 +27,24 @@ As a [role], I want [action] so that [benefit].
 
 ---
 
+### FEAT-002 — Gradle 9 Upgrade
+**Status**: Done
+**Branch**: `feature/feat-002-gradle-9-upgrade`
+
+#### Architect Notes
+Bump Gradle wrapper from 8.10.2 to 9.5.1. Switch Shadow plugin from `com.github.johnrengelman.shadow` (dropped Gradle 9 support) to `com.gradleup.shadow` at 9.0.0. Bump Kotlin to 2.3.0, Compose Multiplatform to 1.8.0, and kotlinx-serialization to 1.8.0. Frontend dev server pinned to port 3000 via `devServerProperty` in `runTask`.
+
+#### User Story
+As a developer, I want the build toolchain on Gradle 9 so that the project stays on a supported version and benefits from improved build performance and APIs.
+
+#### Acceptance Criteria
+- [x] `./gradlew :backend:compileKotlin` succeeds on Gradle 9.5.1
+- [x] `./gradlew :backend:shadowJar` produces a runnable fat JAR
+- [x] `./gradlew :frontend:wasmJsBrowserDevelopmentRun` starts the dev server
+- [x] `docker compose up` starts and `GET /health` returns `200 ok`
+
+---
+
 ### FEAT-001 — Project Scaffolding & Gradle Setup
 **Status**: Done
 **Branch**: `feature/feat-001-scaffold`

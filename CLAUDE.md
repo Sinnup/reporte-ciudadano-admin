@@ -30,7 +30,7 @@ Government admin dashboard for tracking and managing citizen pothole reports sub
 ./gradlew :frontend:wasmJsBrowserProductionWebpack
 
 # Local full stack (requires ~/.aws credentials)
-docker-compose up
+docker compose up
 ```
 
 ## Tests
