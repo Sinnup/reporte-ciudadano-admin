@@ -27,6 +27,29 @@ As a [role], I want [action] so that [benefit].
 
 ---
 
+### FEAT-009 — CI/CD Pipelines
+**Status**: Done
+**Branch**: `feature/feat-009-cicd`
+
+#### Architect Notes
+GitHub Actions CI workflow runs on every push and PR: backend compile, unit tests, ktlint lint, Docker build, and Trivy vulnerability scan (CRITICAL/HIGH, ignores unfixed). Frontend WASM compile + production webpack. CD workflows (cd-backend.yml, cd-frontend.yml) deploy to ECS and S3/CloudFront on push to main using OIDC (no long-lived AWS keys in GitHub). Gradle cache via `gradle/actions/setup-gradle`. PR template and Dependabot (Gradle + Actions + Docker) also included.
+
+#### User Story
+As a developer, I want automated CI checks on every PR so that broken builds, failing tests, lint violations, and known vulnerabilities are caught before merging.
+
+#### Acceptance Criteria
+- [x] `ci.yml` triggers on push to any branch and PRs targeting main
+- [x] Backend unit tests run and report is uploaded on failure
+- [x] ktlint check enforced (`ktlintCheck` task via `jlleitschuh/ktlint-gradle` 12.2.0)
+- [x] Docker image builds and Trivy scans for CRITICAL/HIGH CVEs; SARIF uploaded to GitHub Security tab
+- [x] Frontend WASM compiles and production webpack succeeds
+- [x] `cd-backend.yml` builds fat JAR, pushes to ECR, rolling-deploys to ECS via OIDC
+- [x] `cd-frontend.yml` syncs WASM assets to S3 with correct cache headers and invalidates CloudFront
+- [x] Dependabot configured for Gradle, GitHub Actions, and Docker weekly updates
+- [x] PR template guides contributors to run tests, lint, and update changelog
+
+---
+
 ### FEAT-003 — Backend API (DynamoDB + S3 read)
 **Status**: Done
 **Branch**: `feature/feat-003-backend-api`

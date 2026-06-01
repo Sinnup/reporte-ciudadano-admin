@@ -15,6 +15,21 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.4.0] — 2026-06-01
+
+### Added — FEAT-009 CI/CD Pipelines
+
+- `.github/workflows/ci.yml` — CI checks on every push/PR: backend compile, unit tests, ktlint, Docker build, Trivy vulnerability scan (SARIF → GitHub Security tab), frontend WASM compile + production webpack
+- `.github/workflows/cd-backend.yml` — on push to `main`: build fat JAR, push to ECR, rolling ECS deploy, wait for stability (OIDC auth, no long-lived AWS keys)
+- `.github/workflows/cd-frontend.yml` — on push to `main`: production WASM build, S3 sync with correct cache headers, CloudFront invalidation
+- `.github/pull_request_template.md` — PR checklist: tests, lint, Docker build, features.md/changelog.md updates
+- `.github/dependabot.yml` — weekly auto-updates for Gradle, GitHub Actions, and Docker dependencies
+- `.editorconfig` — ktlint `intellij_idea` code style, 120 char line length, no wildcard imports
+- `gradle/libs.versions.toml` — added `ktlint-gradle 12.2.0` plugin alias
+- `backend/build.gradle.kts` — applied `org.jlleitschuh.gradle.ktlint` plugin
+
+---
+
 ## [0.3.0] — 2026-06-01
 
 ### Added — FEAT-003 Backend API (DynamoDB + S3 read)
