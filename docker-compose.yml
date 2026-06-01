@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      CORS_ALLOWED_ORIGIN: "http://localhost:3000"
+      AWS_REGION: us-east-1
+      DYNAMODB_TABLE: reporte-ciudadano-reports
+      S3_BUCKET: reporte-ciudadano-photos
+      COGNITO_POOL_ID: ${COGNITO_POOL_ID:-}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID:-}
+    volumes:
+      # Mount local AWS credentials so the backend can reach DynamoDB/S3 in dev
+      - ~/.aws:/root/.aws:ro
