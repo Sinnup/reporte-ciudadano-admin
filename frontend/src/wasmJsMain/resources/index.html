@@ -10,6 +10,19 @@
         html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
         canvas { display: block; }
     </style>
+    <!--
+        Runtime environment configuration.
+        Replace the empty strings with actual values at deploy time
+        (CloudFront function, CDK deploy script, or server-side template).
+        COGNITO_DOMAIN  — e.g. "your-pool.auth.us-east-1.amazoncognito.com"
+        COGNITO_CLIENT_ID — the Cognito App Client ID
+    -->
+    <script>
+        window.__ENV__ = {
+            COGNITO_DOMAIN: "",
+            COGNITO_CLIENT_ID: ""
+        };
+    </script>
 </head>
 <body>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

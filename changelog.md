@@ -15,6 +15,36 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.7.0] — 2026-06-01
+
+### Added — FEAT-005/006/007 Compose WASM Frontend
+
+#### FEAT-007 Reports Map View
+- `ui/screens/ReportsMapScreen.kt` — `DisposableEffect`-based Leaflet 1.9.4 map; fetches up to 500 reports and places a marker per report at its lat/lng; marker popup shows title + status label; clicking a marker calls `onReportSelected(id)`; map `<div>` is hidden (not destroyed) when navigating away
+- Leaflet JS interop via top-level `js()` functions (`leafletMap`, `leafletMarker`, `leafletTileLayer`, `leafletLatLng`, `fitBounds`, `bindPopup`, `onMarkerClick`, etc.) — `dynamic` is not available in wasmJs
+
+#### FEAT-006 Report Detail + Status Update
+- `ui/screens/ReportDetailScreen.kt` — displays title, description, lat/lng, creation date, current `StatusBadge`; `ExposedDropdownMenuBox` lists all `ReportStatus` values; Save button calls `ApiClient.updateStatus()` inside `rememberCoroutineScope`; success/error communicated via Material3 `Snackbar`; photo thumbnails rendered as HTML `<img>` elements via `DisposableEffect` using presigned S3 URLs from `ApiClient.getPhotoUrl()`
+
+#### FEAT-005 Reports List Screen
+- `ui/screens/ReportsListScreen.kt` — `LazyRow` of `FilterChip` status filters + `LazyColumn` of `ReportCard` items; pagination via `nextKey` / "Load more" button; loading spinner and error-with-retry states
+- `ui/components/StatusBadge.kt` — coloured rounded `Box` + `Text` for each `ReportStatus` value
+- `ui/components/ReportCard.kt` — clickable `Card` with title, `StatusBadge`, and formatted creation date
+
+#### Shared frontend additions
+- `domain/ReportStatus.kt` — frontend enum mirroring backend: `SENT, SEEN, PENDING, IN_PROGRESS, RESOLVED, DISCARDED`; `label` property with user-friendly strings
+- `domain/Report.kt` — serializable data class matching backend `Report`; `createdAtFormatted` computed via `js("new Date(...).toLocaleDateString(...)")`
+- `network/ApiClient.kt` — Ktor JS `HttpClient` with `ContentNegotiation`; base URL from `window.location.origin`; methods: `getReports`, `getReport`, `updateStatus`, `getPhotoKeys`, `getPhotoUrl`; every request attaches `Authorization: Bearer <token>` from `AuthStore`
+- `network/AuthStore.kt` — `sessionStorage`-backed token store (`save`, `load`, `clear`)
+- `network/Dto.kt` — `ReportsResponse`, `PhotoKeysResponse`, `PhotoUrlResponse`, `StatusUpdateRequest`
+- `ui/screens/LoginScreen.kt` — "Sign in with Cognito" button; redirects to Cognito Hosted UI using `COGNITO_DOMAIN` + `COGNITO_CLIENT_ID` read from `window.__ENV__`
+- `main.kt` — state-based router (`Screen.Login / List / Detail / Map`); `LaunchedEffect` handles `?code=` OAuth callback, exchanges code via Ktor `submitForm`, stores token, clears URL; bottom `NavigationBar` tabs for List / Map
+- `resources/index.html` — added `<script>window.__ENV__ = { COGNITO_DOMAIN: "", COGNITO_CLIENT_ID: "" };</script>` placeholder for runtime injection by CloudFront / CDK
+- `gradle/libs.versions.toml` — added `kotlinx-coroutines 1.10.2` version + library alias
+- `frontend/build.gradle.kts` — added `libs.kotlinx.coroutines.core` dependency
+
+---
+
 ## [0.6.0] — 2026-06-01
 
 ### Added — FEAT-008 AWS CDK Infrastructure Stack

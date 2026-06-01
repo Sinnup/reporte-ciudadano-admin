@@ -27,6 +27,66 @@ As a [role], I want [action] so that [benefit].
 
 ---
 
+### FEAT-007 — Reports Map View
+**Status**: Done
+**Branch**: `feature/feat-007-map-view`
+
+#### Architect Notes
+Embed a Leaflet 1.9.4 map (already loaded in `index.html`) inside a `ReportsMapScreen` composable using `DisposableEffect` to manage a `<div id="leaflet-map">` DOM node. Leaflet API is called via Kotlin/wasmJs `js()` top-level functions (`leafletMap`, `leafletMarker`, `leafletTileLayer`, etc.) since `dynamic` is not available in wasmJs. A marker is placed per report at its `(latitude, longitude)`; clicking a marker calls `onReportSelected(id)`. Reports are fetched once with `limit=500` on mount.
+
+#### User Story
+As a government official, I want to see all reported potholes on a map so that I can identify geographic clusters and prioritise repairs.
+
+#### Acceptance Criteria
+- [x] Map renders centred on the report bounding box (or Monterrey by default if empty)
+- [x] Each report appears as a Leaflet marker at its lat/lng
+- [x] Marker popup shows report title and current status label
+- [x] Clicking a marker navigates to the report detail screen
+- [x] Tab bar allows switching between List and Map views without reloading
+
+---
+
+### FEAT-006 — Report Detail + Status Update
+**Status**: Done
+**Branch**: `feature/feat-006-report-detail`
+
+#### Architect Notes
+`ReportDetailScreen` composable loaded by the router when a report card or map marker is tapped. Fetches `GET /api/reports/{id}` and `GET /api/reports/{id}/photos` on mount. Status change uses an `ExposedDropdownMenuBox` (Material3); saving calls `PUT /api/reports/{id}/status` inside a coroutine scope launched from the Save button. Photo presigned URLs are resolved sequentially after the keys are fetched, then rendered as HTML `<img>` elements via `DisposableEffect` (wasmJs cannot embed `AsyncImage` directly). A `Snackbar` reports success or failure.
+
+#### User Story
+As a government official, I want to view full report details and update its status so that the reporting citizen and other officials see accurate progress.
+
+#### Acceptance Criteria
+- [x] Report title, description, lat/lng, and creation date are displayed
+- [x] Current status is shown as a `StatusBadge`
+- [x] Dropdown lists all `ReportStatus` values; selecting one and clicking Save calls `updateStatus`
+- [x] Save button shows a spinner while the request is in flight
+- [x] Success and error outcomes are communicated via a dismissible `Snackbar`
+- [x] Photo thumbnails are loaded via presigned S3 URLs and displayed in a flow grid
+- [x] Back button returns to the report list
+
+---
+
+### FEAT-005 — Reports List Screen
+**Status**: Done
+**Branch**: `feature/feat-005-reports-list`
+
+#### Architect Notes
+`ReportsListScreen` composable with a `LazyRow` of `FilterChip` buttons for status filtering and a `LazyColumn` of `ReportCard` items. Pagination is driven by the `nextKey` from `ReportsResponse`; a "Load more" button appends the next page. Network calls run inside `rememberCoroutineScope` to avoid blocking the composition. `AuthStore` (sessionStorage-backed) provides the Bearer token to `ApiClient`. `StatusBadge` uses per-status background colours for quick visual scanning.
+
+#### User Story
+As a government official, I want to browse and filter pothole reports by status so that I can focus on the items that need my attention.
+
+#### Acceptance Criteria
+- [x] Report cards show title, status badge, and formatted creation date
+- [x] Filtering by status re-fetches with the `status` query param and resets the list
+- [x] Pagination: "Load more" button appears when `nextKey != null` and appends results
+- [x] Loading spinner shown while the first page is in flight
+- [x] Error state shown with a Retry button when the request fails
+- [x] Clicking a card navigates to the report detail screen
+
+---
+
 ### FEAT-009 — CI/CD Pipelines
 **Status**: Done
 **Branch**: `feature/feat-009-cicd`
