@@ -15,6 +15,30 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.6.0] — 2026-06-01
+
+### Added — FEAT-008 AWS CDK Infrastructure Stack
+
+- `infra/bin/app.ts` — CDK app entry point; instantiates `ReporteCiudadanoAdminStack` pinned to account `literal:<AWS_ACCOUNT_ID>` / `us-east-1`
+- `infra/lib/reporte-ciudadano-admin-stack.ts` — single CDK stack provisioning:
+  - **ECR** — `reporte-ciudadano-admin-backend` repository with imageScanOnPush and 10-image lifecycle rule
+  - **VPC** — 2-AZ, public + private subnets, 1 NAT gateway
+  - **ECS Fargate cluster** — `reporte-ciudadano-admin`, Container Insights enabled
+  - **Task IAM roles** — `reporte-ciudadano-admin-task-role` (DynamoDB + S3 scoped) and execution role (ECR pull + SSM read)
+  - **Fargate task definition** — 512 CPU / 1024 MB, port 8080, health check, `COGNITO_USER_POOL_ID` + `COGNITO_CLIENT_ID` sourced from SSM Parameter Store
+  - **ALB** — internet-facing, HTTP → HTTPS redirect, HTTPS listener with ACM cert from `acmCertArn` context, health check `/health`
+  - **S3 bucket** — `reporte-ciudadano-admin-frontend` (private, block all public, versioning on, SSE-S3, enforce SSL)
+  - **CloudFront distribution** — OAC, `index.html` default root, 403/404 → `index.html` (200) for SPA routing, HTTP2, IPv6
+  - **Cognito User Pool** — `reporte-ciudadano-admin-pool`, self sign-up disabled, strict password policy, app client `reporte-ciudadano-admin-web` (no secret, ALLOW_USER_PASSWORD_AUTH + ALLOW_REFRESH_TOKEN_AUTH, callback/logout URLs from `appDomain` context)
+  - **GitHub OIDC IAM role** — `reporte-ciudadano-admin-deploy-role` trusts `token.actions.githubusercontent.com`; grants ECR push, ECS rolling deploy, S3 sync, CloudFront invalidation
+  - **CfnOutputs** — ALB DNS, CloudFront domain, Cognito pool ID, Cognito client ID, ECR URI, GitHub deploy role ARN, cluster/service/bucket names
+- `infra/package.json` — CDK v2 (2.180.0) + TypeScript dependencies
+- `infra/tsconfig.json` — strict TypeScript compiler config targeting ES2020
+- `infra/cdk.json` — CDK app pointer + all CDK v2 feature flags; `acmCertArn` and `appDomain` context keys for customisation
+- `infra/.gitignore` — excludes `node_modules`, `dist`, `cdk.out`
+
+---
+
 ## [0.5.0] — 2026-06-01
 
 ### Added — FEAT-004 Cognito JWT Authentication

@@ -1,0 +1,23 @@
+{
+  "name": "reporte-ciudadano-admin-infra",
+  "version": "0.1.0",
+  "description": "AWS CDK v2 infrastructure for ReporteCiudadanoAdmin",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "diff": "cdk diff",
+    "deploy": "cdk deploy"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "aws-cdk": "2.180.0",
+    "typescript": "~5.7.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.180.0",
+    "constructs": "^10.0.0"
+  }
+}
