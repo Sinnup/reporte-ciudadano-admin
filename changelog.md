@@ -15,6 +15,22 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.3.0] — 2026-06-01
+
+### Added — FEAT-003 Backend API (DynamoDB + S3 read)
+
+- `domain/ReportRepository.kt` + `domain/PhotoRepository.kt` — repository interfaces decoupling routes from AWS
+- `aws/DynamoDbClient.kt` — `DynamoReportRepository`: `Scan` with optional status filter + `UpdateItem` for status changes
+- `aws/S3Client.kt` — `S3PhotoRepository`: `ListObjectsV2` for photo keys + `presignGetObject` (15-min TTL)
+- `routes/ReportsRoutes.kt` — `GET /api/reports`, `GET /api/reports/{id}`, `PUT /api/reports/{id}/status`
+- `routes/PhotosRoutes.kt` — `GET /api/reports/{id}/photos`, `GET /api/reports/{id}/photos/{name}/url`
+- `dto/Dto.kt` — serializable request/response DTOs
+- `backend/src/test/` — 9 unit tests (`ReportsRoutesTest`, `PhotosRoutesTest`) using `ktor-server-test-host` with fake repositories
+- `gradle/libs.versions.toml` — added `ktor-server-test-host` alias
+- `backend/build.gradle.kts` — added `testImplementation` dependencies
+
+---
+
 ## [0.2.0] — 2026-06-01
 
 ### Changed — FEAT-002 Gradle 9 Upgrade

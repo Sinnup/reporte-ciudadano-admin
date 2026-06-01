@@ -27,6 +27,26 @@ As a [role], I want [action] so that [benefit].
 
 ---
 
+### FEAT-003 — Backend API (DynamoDB + S3 read)
+**Status**: Done
+**Branch**: `feature/feat-003-backend-api`
+
+#### Architect Notes
+Wire up all REST API routes backed by DynamoDB and S3. Auth (Cognito JWT) is deferred to FEAT-004. Top-level functions in `aws/DynamoDbClient.kt` and `aws/S3Client.kt` wrap the AWS SDK Kotlin clients; route extension functions in `routes/ReportsRoutes.kt` and `routes/PhotosRoutes.kt` keep the Ktor layer thin. Serialization DTOs live in `dto/Dto.kt`.
+
+#### User Story
+As a government official, I want the admin dashboard backend to serve report data from DynamoDB and photo URLs from S3 so that the frontend can display and update citizen reports.
+
+#### Acceptance Criteria
+- [x] `GET /api/reports` returns paginated report list from DynamoDB
+- [x] `GET /api/reports/{id}` returns a single report or 404
+- [x] `PUT /api/reports/{id}/status` updates report status in DynamoDB; returns 404 when ID absent
+- [x] `GET /api/reports/{id}/photos` returns S3 object keys for the report
+- [x] `GET /api/reports/{id}/photos/{name}/url` returns a 15-minute presigned S3 GET URL
+- [x] `GET /health` still returns 200 without auth
+
+---
+
 ### FEAT-002 — Gradle 9 Upgrade
 **Status**: Done
 **Branch**: `feature/feat-002-gradle-9-upgrade`

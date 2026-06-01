@@ -39,4 +39,7 @@ dependencies {
     implementation(libs.aws.s3)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.logback.classic)
+
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(kotlin("test"))
 }
