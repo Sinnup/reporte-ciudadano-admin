@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM eclipse-temurin:25-jdk-alpine AS build
 WORKDIR /build
 
 # Copy wrapper + config first for layer caching
@@ -13,7 +13,7 @@ COPY backend/src backend/src
 
 RUN ./gradlew :backend:shadowJar --no-daemon
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /build/backend/build/libs/backend-all.jar app.jar
 EXPOSE 8080
