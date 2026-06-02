@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
  */
 private fun formatDate(epochMs: Long): String =
     js("new Date(epochMs).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })")
-        .toString()
 
 @Serializable
 data class Report(

@@ -16,11 +16,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.browser.window
 
 private fun encodeURIComponent(value: String): String =
-    js("encodeURIComponent(value)").toString()
-
+    js("encodeURIComponent(value)")
 
 private fun getEnvValue(key: String): String =
-    js("(window.__ENV__ && window.__ENV__[key]) ? window.__ENV__[key] : ''").toString()
+    js("(window.__ENV__ && window.__ENV__[key]) ? window.__ENV__[key] : ''")
 
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier) {

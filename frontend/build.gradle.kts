@@ -11,6 +11,10 @@ group = "com.espert.reporteciudadanoadmin"
 version = "0.1.0"
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.js.ExperimentalWasmJsInterop")
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "admin"
