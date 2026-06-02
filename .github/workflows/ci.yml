@@ -24,7 +24,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Compile
         run: ./gradlew :backend:compileKotlin
@@ -51,7 +51,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: ktlint check
         run: ./gradlew :backend:ktlintCheck
@@ -68,7 +68,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Build fat JAR
         run: ./gradlew :backend:shadowJar
@@ -102,7 +102,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Build fat JAR
         run: ./gradlew :backend:shadowJar
@@ -147,7 +147,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Compile wasmJs
         run: ./gradlew :frontend:compileKotlinWasmJs
