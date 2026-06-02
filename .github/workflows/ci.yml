@@ -78,7 +78,8 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v6
         with:
-          context: backend
+          context: .
+          file: backend/Dockerfile
           push: false
           load: true
           tags: reporte-ciudadano-admin-backend:ci
@@ -111,7 +112,8 @@ jobs:
       - name: Build image for scan
         uses: docker/build-push-action@v6
         with:
-          context: backend
+          context: .
+          file: backend/Dockerfile
           push: false
           load: true
           tags: reporte-ciudadano-admin-backend:scan
