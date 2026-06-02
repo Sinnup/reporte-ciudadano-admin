@@ -75,6 +75,15 @@ jobs:
         with: { distribution: temurin, java-version: 21 }
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew :frontend:wasmJsBrowserProductionWebpack
+      - name: Inject runtime config into index.html
+        env:
+          COGNITO_DOMAIN: ${{ secrets.COGNITO_DOMAIN }}
+          COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
+        run: |
+          sed -i \
+            -e "s|__COGNITO_DOMAIN__|${COGNITO_DOMAIN}|g" \
+            -e "s|__COGNITO_CLIENT_ID__|${COGNITO_CLIENT_ID}|g" \
+            frontend/build/dist/wasmJs/productionExecutable/index.html
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::<AWS_ACCOUNT_ID>:role/github-actions-admin-deploy

@@ -15,6 +15,22 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ---
 
+## [0.8.0] — 2026-06-01
+
+### Changed — Public repo security hardening & Cognito configuration
+
+- Replaced all hardcoded AWS account ID and Cognito values with placeholders across agent files, infra code, and `index.html` — repo is now safe to be public
+- Scrubbed historical git commits with `git filter-repo` to remove previously committed account IDs; force-pushed clean history to remote
+- Fixed `literal:` artifact left by `git filter-repo` in ARNs across `architecture.md`, `changelog.md`, and `infra/` files
+- Updated `.gitignore` to expose `.claude/agents/` while blocking `.claude/worktrees/` and local state files
+- Added `local.properties.example` + `scripts/setup-local.sh` for local dev onboarding
+- Added `cd-frontend.yml` inject step: replaces `__COGNITO_DOMAIN__` and `__COGNITO_CLIENT_ID__` in built `index.html` via GitHub Actions secrets before S3 upload
+- Fixed scope mismatch in `LoginScreen.kt`: `openid+profile+email` → `phone+openid+email` to match Cognito app client
+- Added `.claude/agents/` to the repo — six specialist agents shared with the team for consistent AI-assisted development
+- Added `memory/` directory for AI session context persistence across conversations
+
+---
+
 ## [0.7.0] — 2026-06-01
 
 ### Added — FEAT-005/006/007 Compose WASM Frontend
@@ -49,7 +65,7 @@ Versioning: Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
 ### Added — FEAT-008 AWS CDK Infrastructure Stack
 
-- `infra/bin/app.ts` — CDK app entry point; instantiates `ReporteCiudadanoAdminStack` pinned to account `literal:<AWS_ACCOUNT_ID>` / `us-east-1`
+- `infra/bin/app.ts` — CDK app entry point; instantiates `ReporteCiudadanoAdminStack` pinned to account `<AWS_ACCOUNT_ID>` / `us-east-1`
 - `infra/lib/reporte-ciudadano-admin-stack.ts` — single CDK stack provisioning:
   - **ECR** — `reporte-ciudadano-admin-backend` repository with imageScanOnPush and 10-image lifecycle rule
   - **VPC** — 2-AZ, public + private subnets, 1 NAT gateway

@@ -85,7 +85,7 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
           "dynamodb:DescribeTable",
         ],
         resources: [
-          "arn:aws:dynamodb:us-east-1:literal:<AWS_ACCOUNT_ID>:table/reporte-ciudadano-reports",
+          "arn:aws:dynamodb:us-east-1:<AWS_ACCOUNT_ID>:table/reporte-ciudadano-reports",
         ],
       })
     );
@@ -121,8 +121,8 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
         effect: iam.Effect.ALLOW,
         actions: ["ssm:GetParameters", "ssm:GetParameter"],
         resources: [
-          `arn:aws:ssm:us-east-1:literal:<AWS_ACCOUNT_ID>:parameter/reporte-ciudadano-admin/cognito-user-pool-id`,
-          `arn:aws:ssm:us-east-1:literal:<AWS_ACCOUNT_ID>:parameter/reporte-ciudadano-admin/cognito-client-id`,
+          `arn:aws:ssm:us-east-1:<AWS_ACCOUNT_ID>:parameter/reporte-ciudadano-admin/cognito-user-pool-id`,
+          `arn:aws:ssm:us-east-1:<AWS_ACCOUNT_ID>:parameter/reporte-ciudadano-admin/cognito-client-id`,
         ],
       })
     );
@@ -242,7 +242,7 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
       this,
       "AlbCertificate",
       acmCertArn ||
-        "arn:aws:acm:us-east-1:literal:<AWS_ACCOUNT_ID>:certificate/placeholder-replace-via-context"
+        "arn:aws:acm:us-east-1:<AWS_ACCOUNT_ID>:certificate/placeholder-replace-via-context"
     );
 
     const targetGroup = new elbv2.ApplicationTargetGroup(
@@ -381,7 +381,7 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
         resources: [`${frontendBucket.bucketArn}/*`],
         conditions: {
           StringEquals: {
-            "AWS:SourceArn": `arn:aws:cloudfront::literal:<AWS_ACCOUNT_ID>:distribution/${distribution.distributionId}`,
+            "AWS:SourceArn": `arn:aws:cloudfront::<AWS_ACCOUNT_ID>:distribution/${distribution.distributionId}`,
           },
         },
       })
@@ -543,7 +543,7 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
         ],
         resources: [
           ecsService.serviceArn,
-          `arn:aws:ecs:us-east-1:literal:<AWS_ACCOUNT_ID>:task-definition/reporte-ciudadano-admin-backend:*`,
+          `arn:aws:ecs:us-east-1:<AWS_ACCOUNT_ID>:task-definition/reporte-ciudadano-admin-backend:*`,
         ],
       })
     );
@@ -588,7 +588,7 @@ export class ReporteCiudadanoAdminStack extends cdk.Stack {
           "cloudfront:ListInvalidations",
         ],
         resources: [
-          `arn:aws:cloudfront::literal:<AWS_ACCOUNT_ID>:distribution/${distribution.distributionId}`,
+          `arn:aws:cloudfront::<AWS_ACCOUNT_ID>:distribution/${distribution.distributionId}`,
         ],
       })
     );

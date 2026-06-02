@@ -88,6 +88,12 @@ ReporteCiudadanoAdmin/          (project root = /Users/sinue/Documents/Reporte C
     backend.yml                  Build → Docker → push ECR → deploy ECS
     frontend.yml                 Build WASM → deploy to S3 → invalidate CloudFront
 
+  .claude/agents/                Claude Code specialist agents (shared with team)
+  memory/                        AI session context persistence
+  scripts/
+    setup-local.sh               Patches placeholders with values from local.properties
+  local.properties.example       Template — committed, no values
+  local.properties               Actual env values — gitignored, never commit
   docker-compose.yml             Local development (Ktor + mock data)
   settings.gradle.kts            Multi-project: includes :backend :frontend
   build.gradle.kts               Root Gradle config
@@ -115,17 +121,24 @@ All routes except `/health` require `Authorization: Bearer <cognito-jwt>`.
 
 ## Authentication (Cognito)
 
-- **User Pool**: `reporte-ciudadano-admin-pool`
-- **App client**: `reporte-ciudadano-admin-web` (no client secret, public PKCE flow)
-- **Hosted UI**: Cognito-managed login page (no custom login UI needed initially)
+- **User Pool**: `reporte-ciudadano-admin-pool` (ID: `COGNITO_USER_POOL_ID` from `local.properties`)
+- **App client**: `reporte-ciudadano-admin-web` (no client secret, public PKCE flow; ID: `COGNITO_CLIENT_ID`)
+- **Hosted UI domain**: `COGNITO_DOMAIN` from `local.properties` / GitHub Secrets
+- **Scopes**: `phone openid email`
 - **Token flow**: Authorization Code + PKCE
-  1. Frontend redirects to Cognito hosted UI
-  2. Official logs in
-  3. Cognito redirects back with auth code
-  4. Frontend exchanges code for ID + Access tokens (via Cognito token endpoint)
-  5. Frontend stores tokens in `sessionStorage`
+  1. Frontend reads `COGNITO_DOMAIN` + `COGNITO_CLIENT_ID` from `window.__ENV__` (injected into `index.html` at deploy time)
+  2. User clicks "Sign in" → redirected to Cognito Hosted UI
+  3. Official logs in; Cognito redirects back with `?code=`
+  4. `main.kt` exchanges the code for an access token via `POST /oauth2/token`
+  5. Token stored in `sessionStorage` via `AuthStore`
   6. All backend requests carry `Authorization: Bearer <access-token>`
   7. Ktor `ktor-auth-jwt` validates the token against Cognito's JWKS endpoint
+
+### Runtime config injection
+
+`index.html` ships with placeholders; actual values are injected at two points:
+- **Local dev**: `scripts/setup-local.sh` reads `local.properties` and patches files in place
+- **CI/CD**: `cd-frontend.yml` runs `sed` on the built `index.html` before S3 upload using GitHub Actions secrets (`COGNITO_DOMAIN`, `COGNITO_CLIENT_ID`) stored in the `production` environment
 
 ---
 
@@ -147,7 +160,7 @@ ECS tasks use this role via the instance metadata service — no long-lived cred
         "dynamodb:UpdateItem",
         "dynamodb:DescribeTable"
       ],
-      "Resource": "arn:aws:dynamodb:us-east-1:literal:<AWS_ACCOUNT_ID>:table/reporte-ciudadano-reports"
+      "Resource": "arn:aws:dynamodb:us-east-1:<AWS_ACCOUNT_ID>:table/reporte-ciudadano-reports"
     },
     {
       "Sid": "S3PhotoRead",

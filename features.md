@@ -27,6 +27,24 @@ As a [role], I want [action] so that [benefit].
 
 ---
 
+### FEAT-010 — Public Repo Security Hardening & Cognito Configuration
+**Status**: Done
+**Branch**: `main`
+
+#### Architect Notes
+Repo made public. All hardcoded AWS account IDs and Cognito values replaced with placeholders (`<AWS_ACCOUNT_ID>`, `__COGNITO_DOMAIN__`, `__COGNITO_CLIENT_ID__`). Git history scrubbed with `git filter-repo`. Local dev workflow uses `local.properties` (gitignored) + `scripts/setup-local.sh`. CI/CD injects Cognito values into `index.html` via GitHub Actions secrets at deploy time. Agent files added to repo for team-wide AI context sharing.
+
+#### Acceptance Criteria
+- [x] No hardcoded AWS account ID or Cognito values in any committed file
+- [x] Git history scrubbed — `git log --all -p | grep 876775044105` returns nothing
+- [x] `local.properties.example` documents all required env vars
+- [x] `scripts/setup-local.sh` patches local files from `local.properties`
+- [x] `cd-frontend.yml` injects `__COGNITO_DOMAIN__` and `__COGNITO_CLIENT_ID__` before S3 upload
+- [x] `.claude/agents/` committed and visible to team
+- [x] `LoginScreen.kt` scope matches Cognito app client (`phone+openid+email`)
+
+---
+
 ### FEAT-007 — Reports Map View
 **Status**: Done
 **Branch**: `feature/feat-007-map-view`

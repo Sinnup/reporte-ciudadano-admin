@@ -7,7 +7,7 @@ const app = new cdk.App();
 
 new ReporteCiudadanoAdminStack(app, "ReporteCiudadanoAdminStack", {
   env: {
-    account: "literal:<AWS_ACCOUNT_ID>",
+    account: "<AWS_ACCOUNT_ID>",
     region: "us-east-1",
   },
   description:
