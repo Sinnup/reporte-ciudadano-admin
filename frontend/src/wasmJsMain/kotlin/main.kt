@@ -44,8 +44,7 @@ sealed class Screen {
 // Helpers
 // ---------------------------------------------------------------------------
 
-private fun getEnvValue(key: String): String =
-    js("(window.__ENV__ && window.__ENV__[key]) ? window.__ENV__[key] : ''").toString()
+private fun getEnvValue(key: String): String = js("(window.__ENV__ && window.__ENV__[key]) ? window.__ENV__[key] : ''").toString()
 
 @Serializable
 private data class TokenResponse(

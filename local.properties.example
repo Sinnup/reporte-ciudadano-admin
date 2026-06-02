@@ -1,0 +1,9 @@
+# Copy this file to local.properties and fill in your values.
+# local.properties is gitignored — never commit it.
+# Run scripts/setup-local.sh after filling in values.
+
+AWS_ACCOUNT_ID=
+COGNITO_USER_POOL_ID=
+COGNITO_CLIENT_ID=
+COGNITO_DOMAIN=
+CLOUDFRONT_DOMAIN=

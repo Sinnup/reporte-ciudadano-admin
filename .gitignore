@@ -14,8 +14,10 @@ build/
 .DS_Store
 Thumbs.db
 
-# Claude AI context (agents contain architecture details and AWS ARNs)
-.claude/
+# Claude AI — ignore local/generated state, but share agent definitions with the team
+.claude/worktrees/
+.claude/settings.local.json
+.claude/todos.json
 
 # Kotlin daemon
 .kotlin/

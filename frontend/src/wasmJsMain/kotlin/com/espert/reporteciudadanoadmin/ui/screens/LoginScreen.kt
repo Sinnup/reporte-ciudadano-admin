@@ -55,7 +55,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                     "?response_type=code" +
                     "&client_id=${encodeURIComponent(clientId)}" +
                     "&redirect_uri=${encodeURIComponent(redirectUri)}" +
-                    "&scope=openid+profile+email"
+                    "&scope=phone+openid+email"
                 window.location.href = authorizeUrl
             }
         ) {
