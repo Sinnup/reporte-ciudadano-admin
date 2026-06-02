@@ -4,10 +4,13 @@ import com.espert.reporteciudadanoadmin.domain.ReportRepository
 import com.espert.reporteciudadanoadmin.domain.ReportStatus
 import com.espert.reporteciudadanoadmin.dto.ReportsListResponse
 import com.espert.reporteciudadanoadmin.dto.StatusUpdateRequest
-import io.ktor.http.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.route
 
 fun Route.reportsRoutes(repo: ReportRepository) {
     route("/reports") {
@@ -33,8 +36,11 @@ fun Route.reportsRoutes(repo: ReportRepository) {
                 return@put call.respond(HttpStatusCode.BadRequest, "Unknown status: ${body.status}")
             }
             val updated = repo.updateReportStatus(id, newStatus)
-            if (updated) call.respond(HttpStatusCode.OK)
-            else call.respond(HttpStatusCode.NotFound)
+            if (updated) {
+                call.respond(HttpStatusCode.OK)
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
         }
     }
 }

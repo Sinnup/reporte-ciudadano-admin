@@ -11,5 +11,5 @@ data class Report(
     val longitude: Double,
     val status: ReportStatus,
     val createdAt: Long,
-    val photoKeys: List<String> = emptyList()
+    val photoKeys: List<String> = emptyList(),
 )

@@ -1,9 +1,13 @@
 package com.espert.reporteciudadanoadmin.plugins
 
 import com.auth0.jwk.JwkProviderBuilder
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.response.respondText
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
@@ -30,7 +34,7 @@ fun Application.configureAuth() {
                 if (clientIdClaim == clientId) JWTPrincipal(credential.payload) else null
             }
             challenge { _, _ ->
-                call.respond(io.ktor.http.HttpStatusCode.Unauthorized, "Invalid or missing token")
+                call.respondText("Invalid or missing token", status = HttpStatusCode.Unauthorized)
             }
         }
     }

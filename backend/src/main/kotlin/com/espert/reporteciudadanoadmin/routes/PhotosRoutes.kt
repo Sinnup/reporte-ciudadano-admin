@@ -3,9 +3,11 @@ package com.espert.reporteciudadanoadmin.routes
 import com.espert.reporteciudadanoadmin.domain.PhotoRepository
 import com.espert.reporteciudadanoadmin.dto.PhotoKeysResponse
 import com.espert.reporteciudadanoadmin.dto.PresignedUrlResponse
-import io.ktor.http.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.route
 
 fun Route.photosRoutes(repo: PhotoRepository) {
     route("/reports/{id}/photos") {

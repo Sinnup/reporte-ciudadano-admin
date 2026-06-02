@@ -77,11 +77,11 @@ class DynamoDbReportRepository : ReportRepository {
 }
 
 internal fun Map<String, AttributeValue>.toReport(): Report = Report(
-    id          = (this["id"]          as AttributeValue.S).value,
-    title       = (this["title"]       as AttributeValue.S).value,
+    id = (this["id"] as AttributeValue.S).value,
+    title = (this["title"] as AttributeValue.S).value,
     description = (this["description"] as AttributeValue.S).value,
-    latitude    = (this["latitude"]    as AttributeValue.N).value.toDouble(),
-    longitude   = (this["longitude"]   as AttributeValue.N).value.toDouble(),
-    status      = ReportStatus.valueOf((this["status"] as AttributeValue.S).value),
-    createdAt   = (this["createdAt"]   as AttributeValue.N).value.toLong(),
+    latitude = (this["latitude"] as AttributeValue.N).value.toDouble(),
+    longitude = (this["longitude"] as AttributeValue.N).value.toDouble(),
+    status = ReportStatus.valueOf((this["status"] as AttributeValue.S).value),
+    createdAt = (this["createdAt"] as AttributeValue.N).value.toLong(),
 )
